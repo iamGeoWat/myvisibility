@@ -13,6 +13,7 @@ const upsertTargetSchema = z.object({
   phones: z.array(z.string().min(4)).max(10),
   emails: z.array(z.string().email()).max(10),
   addresses: z.array(z.string().min(3)).max(10),
+  aliases: z.array(z.string().min(1)).max(20),
 });
 
 async function requireUserId() {
@@ -46,6 +47,7 @@ export async function upsertTarget(input: z.infer<typeof upsertTargetSchema>) {
         phones: parsed.phones,
         emails: parsed.emails,
         addresses: parsed.addresses,
+        aliases: parsed.aliases,
         updatedAt: new Date(),
       })
       .where(eq(schema.targets.userId, userId));
@@ -56,6 +58,7 @@ export async function upsertTarget(input: z.infer<typeof upsertTargetSchema>) {
       phones: parsed.phones,
       emails: parsed.emails,
       addresses: parsed.addresses,
+      aliases: parsed.aliases,
     });
   }
 

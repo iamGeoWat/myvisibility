@@ -12,6 +12,7 @@ type Finding = {
   difficulty: string;
   confidence: number;
   matchedFields: string[];
+  sourceIsSelfPublished: boolean;
   removalTitle: string | null;
   removalActionUrl: string | null;
   removalContactEmail: string | null;
@@ -65,6 +66,11 @@ export function FindingCard({ f }: { f: Finding }) {
         >
           {f.difficulty}
         </span>
+        {f.sourceIsSelfPublished && (
+          <span className="rounded-full bg-blue-100 px-2 py-0.5 font-medium text-blue-800 dark:bg-blue-950 dark:text-blue-200">
+            your account
+          </span>
+        )}
         <span className="text-neutral-500">
           matched: {f.matchedFields.join(", ") || "?"} ·{" "}
           {Math.round(f.confidence * 100)}%
@@ -103,7 +109,7 @@ export function FindingCard({ f }: { f: Finding }) {
                 rel="noreferrer"
                 className="rounded-md bg-neutral-900 px-3 py-1.5 text-xs font-medium text-white dark:bg-white dark:text-neutral-900"
               >
-                Open opt-out page
+                {f.sourceIsSelfPublished ? "Review your account" : "Open opt-out page"}
               </a>
             )}
             {f.removalContactEmail && (
@@ -171,7 +177,9 @@ export function FindingCard({ f }: { f: Finding }) {
               start(() => markFindingDone(f.id, next));
             }}
           />
-          I've submitted the removal request
+          {f.sourceIsSelfPublished
+            ? "I've reviewed / updated this account"
+            : "I've submitted the removal request"}
         </label>
       </div>
     </li>

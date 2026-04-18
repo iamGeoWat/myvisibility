@@ -31,6 +31,7 @@ export default async function OnboardingPage() {
           phones: target?.phones ?? [],
           emails: target?.emails ?? [],
           addresses: target?.addresses ?? [],
+          aliases: target?.aliases ?? [],
         }}
       />
     </main>

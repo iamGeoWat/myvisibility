@@ -35,6 +35,7 @@ export async function runScan(userId: string, scanId: string) {
       emails: target.emails,
       addresses: target.addresses,
     };
+    const aliases = target.aliases;
     const queries = buildQueries(pii);
     const region = user.region as Region;
 
@@ -49,6 +50,7 @@ export async function runScan(userId: string, scanId: string) {
     for (const r of seen.values()) {
       const cls = await classifyResult({
         pii,
+        aliases,
         result: { title: r.title, url: r.url, snippet: r.description },
       });
       if (!cls.isUser || cls.confidence < CONFIDENCE_THRESHOLD) continue;
@@ -59,6 +61,7 @@ export async function runScan(userId: string, scanId: string) {
         region,
         result: { title: r.title, url: r.url, snippet: r.description },
         bucket: cls.bucket,
+        sourceIsSelfPublished: cls.sourceIsSelfPublished,
         knownBroker: knownBroker
           ? {
               name: knownBroker.name,
@@ -79,6 +82,7 @@ export async function runScan(userId: string, scanId: string) {
         difficulty: card.difficulty,
         confidence: cls.confidence,
         matchedFields: cls.matchedFields,
+        sourceIsSelfPublished: cls.sourceIsSelfPublished,
         removalTitle: card.title,
         removalActionUrl: card.actionUrl ?? null,
         removalContactEmail: card.contactEmail ?? null,

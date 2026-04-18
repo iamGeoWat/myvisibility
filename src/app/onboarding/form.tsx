@@ -11,6 +11,7 @@ type Initial = {
   phones: string[];
   emails: string[];
   addresses: string[];
+  aliases: string[];
 };
 
 export function OnboardingForm({ initial }: { initial: Initial }) {
@@ -21,6 +22,7 @@ export function OnboardingForm({ initial }: { initial: Initial }) {
   const [phones, setPhones] = useState(initial.phones.join("\n"));
   const [emails, setEmails] = useState(initial.emails.join("\n"));
   const [addresses, setAddresses] = useState(initial.addresses.join("\n"));
+  const [aliases, setAliases] = useState(initial.aliases.join("\n"));
 
   const toLines = (s: string) =>
     s
@@ -40,6 +42,7 @@ export function OnboardingForm({ initial }: { initial: Initial }) {
             phones: toLines(phones),
             emails: toLines(emails),
             addresses: toLines(addresses),
+            aliases: toLines(aliases),
           });
           router.push("/dashboard");
         });
@@ -85,6 +88,14 @@ export function OnboardingForm({ initial }: { initial: Initial }) {
         <textarea
           value={addresses}
           onChange={(e) => setAddresses(e.target.value)}
+          rows={3}
+          className="input font-mono text-sm"
+        />
+      </Field>
+      <Field label="Usernames / personal URLs (helps us tell you apart from namesakes — e.g. github.com/iamGeoWat, xikai.me, @mytwitterhandle)">
+        <textarea
+          value={aliases}
+          onChange={(e) => setAliases(e.target.value)}
           rows={3}
           className="input font-mono text-sm"
         />

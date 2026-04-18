@@ -46,6 +46,9 @@ export const targets = pgTable("targets", {
   phones: jsonb("phones").$type<string[]>().notNull().default([]),
   emails: jsonb("emails").$type<string[]>().notNull().default([]),
   addresses: jsonb("addresses").$type<string[]>().notNull().default([]),
+  // Confirmed self-identifiers: usernames, personal domains, handles.
+  // Used to disambiguate namesakes (e.g. GitHub username, personal site host).
+  aliases: jsonb("aliases").$type<string[]>().notNull().default([]),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
 
@@ -79,6 +82,12 @@ export const findings = pgTable("findings", {
   difficulty: difficultyEnum("difficulty").notNull(),
   confidence: real("confidence").notNull(),
   matchedFields: jsonb("matched_fields").$type<string[]>().notNull().default([]),
+  // True when the URL looks like an account the user themselves controls
+  // (their LinkedIn, their GitHub, their personal domain). Changes the UI
+  // card from "takedown request" to "review your own account".
+  sourceIsSelfPublished: boolean("source_is_self_published")
+    .notNull()
+    .default(false),
   // Removal card — rendered to the user as-is.
   removalTitle: text("removal_title"),
   removalActionUrl: text("removal_action_url"),
