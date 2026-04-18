@@ -1,0 +1,509 @@
+{
+  "$schema": "./samples.schema.json",
+  "_comment": "Hand-labeled eval fixtures. Personas are synthetic (no real PII) except where noted public identifiers are used. expected.isUser is ground truth: true iff the result is about THIS persona (not a namesake). expected.bucket is only checked when isUser=true. expected.sourceIsSelfPublished is only checked when isUser=true.",
+  "personas": {
+    "jordan_us": {
+      "region": "US",
+      "pii": {
+        "names": ["Jordan Blake"],
+        "phones": ["(415) 555-0137"],
+        "emails": ["jordan.blake@example.org"],
+        "addresses": ["San Francisco, CA"]
+      },
+      "aliases": ["github.com/jblake", "jblake.dev", "@jblake"]
+    },
+    "xiaoming_cn": {
+      "region": "CN",
+      "pii": {
+        "names": ["Xiaoming Li", "李小明"],
+        "phones": ["13800138000"],
+        "emails": ["lixm@example.cn"],
+        "addresses": ["北京市海淀区"]
+      },
+      "aliases": ["weibo.com/xiaomingli"]
+    },
+    "anna_eu": {
+      "region": "EU",
+      "pii": {
+        "names": ["Anna Müller"],
+        "phones": ["+49 30 555 0199"],
+        "emails": ["anna.mueller@example.de"],
+        "addresses": ["Berlin"]
+      },
+      "aliases": ["annamueller.de"]
+    }
+  },
+  "samples": [
+    {
+      "persona": "jordan_us",
+      "result": {
+        "title": "Jordan Blake in San Francisco, CA — Spokeo",
+        "url": "https://www.spokeo.com/Jordan-Blake/California/San-Francisco",
+        "snippet": "Jordan Blake, age 34, San Francisco CA. View phone, address, relatives."
+      },
+      "expected": { "isUser": true, "bucket": "broker", "sourceIsSelfPublished": false }
+    },
+    {
+      "persona": "jordan_us",
+      "result": {
+        "title": "Whitepages — (415) 555-0137",
+        "url": "https://www.whitepages.com/phone/1-415-555-0137",
+        "snippet": "Reverse phone lookup for (415) 555-0137 — registered to Jordan Blake, San Francisco CA."
+      },
+      "expected": { "isUser": true, "bucket": "broker", "sourceIsSelfPublished": false }
+    },
+    {
+      "persona": "jordan_us",
+      "result": {
+        "title": "Jordan Blake - LinkedIn",
+        "url": "https://www.linkedin.com/in/jblake",
+        "snippet": "Senior engineer at Acme · San Francisco Bay Area · 500+ connections."
+      },
+      "expected": { "isUser": true, "bucket": "social", "sourceIsSelfPublished": true }
+    },
+    {
+      "persona": "jordan_us",
+      "result": {
+        "title": "jblake (Jordan Blake) · GitHub",
+        "url": "https://github.com/jblake",
+        "snippet": "Working on open-source tools. Based in SF."
+      },
+      "expected": { "isUser": true, "bucket": "social", "sourceIsSelfPublished": true }
+    },
+    {
+      "persona": "jordan_us",
+      "result": {
+        "title": "jblake.dev — Jordan Blake's notes",
+        "url": "https://jblake.dev/",
+        "snippet": "Personal blog. Contact: jordan.blake@example.org."
+      },
+      "expected": { "isUser": true, "bucket": "social", "sourceIsSelfPublished": true }
+    },
+    {
+      "persona": "jordan_us",
+      "result": {
+        "title": "Jordan Blake elected mayor of Springfield, IL",
+        "url": "https://springfieldnews.example/jordan-blake-mayor",
+        "snippet": "After a tight race, Jordan Blake, a local attorney, will take office next month."
+      },
+      "expected": { "isUser": false, "bucket": "news", "sourceIsSelfPublished": false }
+    },
+    {
+      "persona": "jordan_us",
+      "result": {
+        "title": "BeenVerified - Jordan Blake",
+        "url": "https://www.beenverified.com/people/jordan-blake",
+        "snippet": "1,284 people named Jordan Blake across the US. View full reports."
+      },
+      "expected": { "isUser": false, "bucket": "broker", "sourceIsSelfPublished": false }
+    },
+    {
+      "persona": "jordan_us",
+      "result": {
+        "title": "Reddit — u/jblake's comments",
+        "url": "https://www.reddit.com/user/jblake",
+        "snippet": "Comment history for user jblake."
+      },
+      "expected": { "isUser": true, "bucket": "social", "sourceIsSelfPublished": true }
+    },
+    {
+      "persona": "jordan_us",
+      "result": {
+        "title": "Civil docket: City and County of San Francisco",
+        "url": "https://sfsuperior.example/docket/CV-2022-84210",
+        "snippet": "Jordan Blake vs. ABC Corp — small claims filed 2022-04-11."
+      },
+      "expected": { "isUser": true, "bucket": "gov_record", "sourceIsSelfPublished": false }
+    },
+    {
+      "persona": "jordan_us",
+      "result": {
+        "title": "Pelican Harbor Homeowners Association directory",
+        "url": "https://pelicanharbor.example/residents",
+        "snippet": "J. Blake (Unit 42). Next meeting: Thursday."
+      },
+      "expected": { "isUser": false, "bucket": "other", "sourceIsSelfPublished": false }
+    },
+    {
+      "persona": "jordan_us",
+      "result": {
+        "title": "Radaris: Jordan A Blake, age 34, San Francisco",
+        "url": "https://radaris.com/p/Jordan/Blake/1",
+        "snippet": "Current address 123 Market St, San Francisco, CA. Phone (415) 555-0137. Relatives."
+      },
+      "expected": { "isUser": true, "bucket": "broker", "sourceIsSelfPublished": false }
+    },
+    {
+      "persona": "jordan_us",
+      "result": {
+        "title": "Forum post by Jordan Blake — 2012",
+        "url": "https://oldforum.example/t/123/post/456",
+        "snippet": "Thanks for the advice everyone — Jordan"
+      },
+      "expected": { "isUser": false, "bucket": "other", "sourceIsSelfPublished": false }
+    },
+    {
+      "persona": "jordan_us",
+      "result": {
+        "title": "Leaked marketing list — pastebin",
+        "url": "https://pastebin.example/raw/xYz",
+        "snippet": "jordan.blake@example.org, 415-555-0137, SF CA"
+      },
+      "expected": { "isUser": true, "bucket": "other", "sourceIsSelfPublished": false }
+    },
+    {
+      "persona": "jordan_us",
+      "result": {
+        "title": "Jordan Blake — LinkedIn (Chicago, IL)",
+        "url": "https://www.linkedin.com/in/jordan-blake-chicago",
+        "snippet": "Marketing director at XYZ. Greater Chicago Area."
+      },
+      "expected": { "isUser": false, "bucket": "social", "sourceIsSelfPublished": false }
+    },
+    {
+      "persona": "jordan_us",
+      "result": {
+        "title": "Twitter / @jblake",
+        "url": "https://twitter.com/jblake",
+        "snippet": "Engineer. SF. Opinions my own."
+      },
+      "expected": { "isUser": true, "bucket": "social", "sourceIsSelfPublished": true }
+    },
+    {
+      "persona": "jordan_us",
+      "result": {
+        "title": "TruePeopleSearch — Jordan Blake, 34",
+        "url": "https://www.truepeoplesearch.com/results?name=Jordan+Blake&citystatezip=San+Francisco+CA",
+        "snippet": "Address on Market St, San Francisco CA. Phone number available."
+      },
+      "expected": { "isUser": true, "bucket": "broker", "sourceIsSelfPublished": false }
+    },
+    {
+      "persona": "jordan_us",
+      "result": {
+        "title": "Google Scholar — Jordan Blake (neuroscience)",
+        "url": "https://scholar.google.com/citations?user=abc123",
+        "snippet": "Author: Jordan Blake. Affiliation: Johns Hopkins. h-index: 22."
+      },
+      "expected": { "isUser": false, "bucket": "other", "sourceIsSelfPublished": false }
+    },
+    {
+      "persona": "jordan_us",
+      "result": {
+        "title": "Google Cache: jblake.dev/about",
+        "url": "https://webcache.googleusercontent.com/search?q=cache:jblake.dev/about",
+        "snippet": "Cached copy of Jordan Blake's about page."
+      },
+      "expected": { "isUser": true, "bucket": "search_cache", "sourceIsSelfPublished": true }
+    },
+    {
+      "persona": "jordan_us",
+      "result": {
+        "title": "Intelius — Jordan Blake, San Francisco CA",
+        "url": "https://www.intelius.com/people-search/Jordan-Blake/San-Francisco-CA",
+        "snippet": "Premium report includes address, phone, email, relatives."
+      },
+      "expected": { "isUser": true, "bucket": "broker", "sourceIsSelfPublished": false }
+    },
+    {
+      "persona": "jordan_us",
+      "result": {
+        "title": "Marathon results 2023 — Jordan Blake",
+        "url": "https://sfmarathon.example/results?year=2023&bib=4521",
+        "snippet": "Jordan Blake, 34, San Francisco CA — finish time 3:42:18"
+      },
+      "expected": { "isUser": true, "bucket": "other", "sourceIsSelfPublished": false }
+    },
+
+    {
+      "persona": "xiaoming_cn",
+      "result": {
+        "title": "李小明 - 百度百科",
+        "url": "https://baike.baidu.com/item/%E6%9D%8E%E5%B0%8F%E6%98%8E",
+        "snippet": "李小明（1975－），中国数学家，现任清华大学教授。"
+      },
+      "expected": { "isUser": false, "bucket": "other", "sourceIsSelfPublished": false }
+    },
+    {
+      "persona": "xiaoming_cn",
+      "result": {
+        "title": "微博 - xiaomingli",
+        "url": "https://weibo.com/xiaomingli",
+        "snippet": "李小明 的微博。北京。"
+      },
+      "expected": { "isUser": true, "bucket": "social", "sourceIsSelfPublished": true }
+    },
+    {
+      "persona": "xiaoming_cn",
+      "result": {
+        "title": "天眼查 - 李小明",
+        "url": "https://www.tianyancha.com/person/p123456",
+        "snippet": "李小明，北京市海淀区，担任多家公司法人代表。"
+      },
+      "expected": { "isUser": true, "bucket": "broker", "sourceIsSelfPublished": false }
+    },
+    {
+      "persona": "xiaoming_cn",
+      "result": {
+        "title": "13800138000 归属地查询",
+        "url": "https://m.ip138.com/mobile.asp?mobile=13800138000",
+        "snippet": "13800138000 号码归属地：北京市，移动神州行卡。"
+      },
+      "expected": { "isUser": false, "bucket": "other", "sourceIsSelfPublished": false }
+    },
+    {
+      "persona": "xiaoming_cn",
+      "result": {
+        "title": "企业黄页 - 海淀区某公司 - 法人: 李小明",
+        "url": "https://qyhuangye.example/company/12345",
+        "snippet": "注册地址：北京市海淀区中关村，法人代表：李小明，联系电话：13800138000"
+      },
+      "expected": { "isUser": true, "bucket": "gov_record", "sourceIsSelfPublished": false }
+    },
+    {
+      "persona": "xiaoming_cn",
+      "result": {
+        "title": "Xiaoming Li - LinkedIn (Shanghai)",
+        "url": "https://www.linkedin.com/in/xiaoming-li-shanghai",
+        "snippet": "Software Engineer at Baidu, Shanghai area."
+      },
+      "expected": { "isUser": false, "bucket": "social", "sourceIsSelfPublished": false }
+    },
+    {
+      "persona": "xiaoming_cn",
+      "result": {
+        "title": "新浪 - 李小明 获国家科技进步奖",
+        "url": "https://news.sina.com.cn/c/2018-05-12/doc-ihqfskcp123.shtml",
+        "snippet": "清华大学教授李小明，因在量子计算领域的贡献获国家科技进步奖。"
+      },
+      "expected": { "isUser": false, "bucket": "news", "sourceIsSelfPublished": false }
+    },
+    {
+      "persona": "xiaoming_cn",
+      "result": {
+        "title": "知乎 - 李小明的回答",
+        "url": "https://www.zhihu.com/people/li-xiao-ming-42",
+        "snippet": "李小明，北京市海淀区，软件工程师。"
+      },
+      "expected": { "isUser": true, "bucket": "social", "sourceIsSelfPublished": false }
+    },
+    {
+      "persona": "xiaoming_cn",
+      "result": {
+        "title": "数据泄露 - lixm@example.cn",
+        "url": "https://haveibeenpwned.example/email/lixm@example.cn",
+        "snippet": "该邮箱在 2019 年某社交网站泄露中出现。"
+      },
+      "expected": { "isUser": true, "bucket": "other", "sourceIsSelfPublished": false }
+    },
+    {
+      "persona": "xiaoming_cn",
+      "result": {
+        "title": "小米应用商店 - 开发者李小明",
+        "url": "https://app.mi.com/developer/李小明/apps",
+        "snippet": "开发者发布的应用列表。"
+      },
+      "expected": { "isUser": false, "bucket": "other", "sourceIsSelfPublished": false }
+    },
+
+    {
+      "persona": "anna_eu",
+      "result": {
+        "title": "Anna Müller - Berlin - XING",
+        "url": "https://www.xing.com/profile/Anna_Mueller",
+        "snippet": "Anna Müller, Produktmanagerin, Berlin. Kontakt: anna.mueller@example.de"
+      },
+      "expected": { "isUser": true, "bucket": "social", "sourceIsSelfPublished": true }
+    },
+    {
+      "persona": "anna_eu",
+      "result": {
+        "title": "annamueller.de — About",
+        "url": "https://annamueller.de/about",
+        "snippet": "Product manager in Berlin. Photography on the side."
+      },
+      "expected": { "isUser": true, "bucket": "social", "sourceIsSelfPublished": true }
+    },
+    {
+      "persona": "anna_eu",
+      "result": {
+        "title": "Das Örtliche — Anna Müller, Berlin",
+        "url": "https://www.dasoertliche.example/de/berlin/anna-mueller",
+        "snippet": "Anna Müller, Berlin. Telefon: +49 30 555 0199."
+      },
+      "expected": { "isUser": true, "bucket": "broker", "sourceIsSelfPublished": false }
+    },
+    {
+      "persona": "anna_eu",
+      "result": {
+        "title": "Anna Müller (Swiss skier) - Wikipedia",
+        "url": "https://en.wikipedia.org/wiki/Anna_M%C3%BCller_(skier)",
+        "snippet": "Anna Müller (born 1991) is a Swiss alpine ski racer."
+      },
+      "expected": { "isUser": false, "bucket": "other", "sourceIsSelfPublished": false }
+    },
+    {
+      "persona": "anna_eu",
+      "result": {
+        "title": "Das Telefonbuch — +49 30 555 0199",
+        "url": "https://www.dastelefonbuch.example/Suche/+49-30-555-0199",
+        "snippet": "Treffer: A. Müller, Berlin-Mitte."
+      },
+      "expected": { "isUser": true, "bucket": "broker", "sourceIsSelfPublished": false }
+    },
+    {
+      "persona": "anna_eu",
+      "result": {
+        "title": "Berliner Morgenpost — Anwohnerin beschwert sich über Baulärm",
+        "url": "https://www.morgenpost.example/berlin/artikel12345",
+        "snippet": "Anna Müller aus Berlin-Mitte erzählt von den Bauarbeiten vor ihrer Wohnung."
+      },
+      "expected": { "isUser": true, "bucket": "news", "sourceIsSelfPublished": false }
+    },
+    {
+      "persona": "anna_eu",
+      "result": {
+        "title": "Impressum — annamueller.de",
+        "url": "https://annamueller.de/impressum",
+        "snippet": "Anna Müller, Beispielstraße 1, 10115 Berlin. E-Mail: anna.mueller@example.de."
+      },
+      "expected": { "isUser": true, "bucket": "social", "sourceIsSelfPublished": true }
+    },
+    {
+      "persona": "anna_eu",
+      "result": {
+        "title": "Anna Müller - Lebenslauf - Universität Leipzig",
+        "url": "https://www.uni-leipzig.example/anna-mueller",
+        "snippet": "Prof. Dr. Anna Müller, Lehrstuhl für Philosophie, Leipzig."
+      },
+      "expected": { "isUser": false, "bucket": "other", "sourceIsSelfPublished": false }
+    },
+    {
+      "persona": "anna_eu",
+      "result": {
+        "title": "EU Data breach notice — example.de",
+        "url": "https://dataprotection.example/notice/2023-04",
+        "snippet": "Affected users include anna.mueller@example.de."
+      },
+      "expected": { "isUser": true, "bucket": "other", "sourceIsSelfPublished": false }
+    },
+    {
+      "persona": "anna_eu",
+      "result": {
+        "title": "Instagram — @annamueller_berlin",
+        "url": "https://www.instagram.com/annamueller_berlin",
+        "snippet": "Berlin-based photographer. Prints available."
+      },
+      "expected": { "isUser": true, "bucket": "social", "sourceIsSelfPublished": true }
+    },
+
+    {
+      "persona": "jordan_us",
+      "result": {
+        "title": "Fast People Search — Jordan Blake",
+        "url": "https://www.fastpeoplesearch.com/name/jordan-blake_san-francisco-ca",
+        "snippet": "Age 34. Current: Market St, San Francisco. Phone: (415) 555-xxxx."
+      },
+      "expected": { "isUser": true, "bucket": "broker", "sourceIsSelfPublished": false }
+    },
+    {
+      "persona": "jordan_us",
+      "result": {
+        "title": "Obituary: Jordan Blake (1952–2019)",
+        "url": "https://legacy.example/obituaries/jordan-blake-2019",
+        "snippet": "Jordan Blake, of Topeka, Kansas, passed away..."
+      },
+      "expected": { "isUser": false, "bucket": "news", "sourceIsSelfPublished": false }
+    },
+    {
+      "persona": "jordan_us",
+      "result": {
+        "title": "Hacker News — Show HN: jblake.dev/tools",
+        "url": "https://news.ycombinator.com/item?id=4000001",
+        "snippet": "Show HN: I built a CLI for... — jblake"
+      },
+      "expected": { "isUser": true, "bucket": "social", "sourceIsSelfPublished": false }
+    },
+    {
+      "persona": "jordan_us",
+      "result": {
+        "title": "Meetup — SF Rust meetup attendees",
+        "url": "https://www.meetup.example/sf-rust/events/12345/attendees",
+        "snippet": "Jordan B. and 42 others are attending."
+      },
+      "expected": { "isUser": false, "bucket": "social", "sourceIsSelfPublished": false }
+    },
+    {
+      "persona": "jordan_us",
+      "result": {
+        "title": "Clay County property records — San Francisco",
+        "url": "https://sfassessor.example/property?q=Jordan+Blake",
+        "snippet": "Owner: BLAKE, JORDAN A — 42 Market St #701, APN 1234-567-890."
+      },
+      "expected": { "isUser": true, "bucket": "gov_record", "sourceIsSelfPublished": false }
+    },
+    {
+      "persona": "jordan_us",
+      "result": {
+        "title": "Stack Overflow — jblake profile",
+        "url": "https://stackoverflow.com/users/99999/jblake",
+        "snippet": "3,141 reputation. Tags: rust, typescript."
+      },
+      "expected": { "isUser": true, "bucket": "social", "sourceIsSelfPublished": true }
+    },
+    {
+      "persona": "jordan_us",
+      "result": {
+        "title": "PeekYou — Jordan Blake",
+        "url": "https://www.peekyou.com/jordan_blake",
+        "snippet": "67 results for Jordan Blake. Sort by location."
+      },
+      "expected": { "isUser": false, "bucket": "broker", "sourceIsSelfPublished": false }
+    },
+    {
+      "persona": "jordan_us",
+      "result": {
+        "title": "Alumni directory — UC Berkeley CS 2012",
+        "url": "https://www.berkeley-cs-alumni.example/class-2012",
+        "snippet": "... Jordan Blake (SF) ..."
+      },
+      "expected": { "isUser": true, "bucket": "other", "sourceIsSelfPublished": false }
+    },
+    {
+      "persona": "jordan_us",
+      "result": {
+        "title": "Facebook — Jordan Blake",
+        "url": "https://www.facebook.com/jordan.blake.12345",
+        "snippet": "Lives in Austin, Texas. Works at Cafe Latte."
+      },
+      "expected": { "isUser": false, "bucket": "social", "sourceIsSelfPublished": false }
+    },
+    {
+      "persona": "jordan_us",
+      "result": {
+        "title": "SFMTA parking citation — appeal record",
+        "url": "https://sfmta.example/citation-appeals/2022-0412-JB",
+        "snippet": "Appellant: Jordan Blake — citation dismissed after hearing."
+      },
+      "expected": { "isUser": true, "bucket": "gov_record", "sourceIsSelfPublished": false }
+    },
+    {
+      "persona": "jordan_us",
+      "result": {
+        "title": "MyLife — Jordan Blake profile",
+        "url": "https://www.mylife.com/jordan-blake/e123456789",
+        "snippet": "Reputation score 3.5. Contact info and background check available."
+      },
+      "expected": { "isUser": false, "bucket": "broker", "sourceIsSelfPublished": false }
+    },
+    {
+      "persona": "jordan_us",
+      "result": {
+        "title": "Acme Corp — team page",
+        "url": "https://acme.example/team",
+        "snippet": "Meet the team: ... Jordan Blake, Senior Engineer ..."
+      },
+      "expected": { "isUser": true, "bucket": "other", "sourceIsSelfPublished": false }
+    }
+  ]
+}

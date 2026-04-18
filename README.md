@@ -53,11 +53,27 @@ src/app/dashboard/        Findings view + scan button
 src/data/brokers.json     Known data-broker opt-out seed list
 ```
 
-## Phase 0 validation (before shipping MVP)
+## Phase 0 validation
 
-The single biggest risk is Claude's `is_user` accuracy. Before wiring up
-billing, hand-label ≥50 real Brave Search results against a test persona and
-measure the classifier. Target: ≥85% precision on `isUser=true`.
+The single biggest risk is Claude's `isUser` accuracy. Ship only if
+**precision ≥ 85%** on a held-out eval set (false positives are worse than
+false negatives: they waste users' time on phantom takedowns).
+
+```bash
+export ANTHROPIC_API_KEY=sk-ant-...
+pnpm eval                      # run all ~50 labeled samples in evals/samples.json
+pnpm eval --persona jordan_us  # filter
+pnpm eval --limit 10           # smoke test
+```
+
+The runner (`scripts/eval.ts`) prints a confusion matrix + precision,
+recall, F1, bucket accuracy, and self-published accuracy, plus a list of
+per-sample disagreements so you can iterate the `CLASSIFY_SYSTEM` prompt in
+`src/lib/claude.ts`. Exit code is non-zero if precision < 85%, so you can
+wire this into CI later.
+
+To add new samples, append to `evals/samples.json`. Personas are synthetic
+(no real PII); labels are ground truth.
 
 ## License
 
