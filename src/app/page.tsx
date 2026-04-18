@@ -1,6 +1,10 @@
 import Link from "next/link";
 import { SignInButton, SignedIn, SignedOut } from "@clerk/nextjs";
 
+// Skip static prerender — the landing page renders Clerk components which
+// need the runtime context.
+export const dynamic = "force-dynamic";
+
 export default function Home() {
   return (
     <main className="mx-auto max-w-2xl px-6 py-24">

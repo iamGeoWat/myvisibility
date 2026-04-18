@@ -5,8 +5,13 @@ import { desc, eq } from "drizzle-orm";
 import { db, schema } from "@/lib/db";
 import { StartScanButton } from "./start-scan";
 import { FindingCard } from "./finding-card";
+import { ScanStatus } from "./scan-status";
 
 export const dynamic = "force-dynamic";
+// Allow scans triggered from this page to run up to 5 minutes via `after()`.
+// On Hobby plans Vercel caps at 60s; on Pro the default ceiling is 300s
+// (800s with Fluid Compute).
+export const maxDuration = 300;
 
 export default async function DashboardPage() {
   const { userId } = await auth();
@@ -49,19 +54,7 @@ export default async function DashboardPage() {
         </div>
       </div>
 
-      {latest && (
-        <p className="mt-2 text-sm text-neutral-600 dark:text-neutral-400">
-          Last scan: {latest.status} · {latest.findingsKept} findings from{" "}
-          {latest.resultsSeen} results across {latest.queriesRun} queries
-          {latest.error ? ` · error: ${latest.error}` : ""}
-        </p>
-      )}
-
-      {!latest && (
-        <p className="mt-6 text-sm text-neutral-600 dark:text-neutral-400">
-          No scans yet. Click <strong>Run scan</strong> to start your first one.
-        </p>
-      )}
+      <ScanStatus scan={latest ?? null} />
 
       <ul className="mt-8 space-y-4">
         {items.map((f) => (

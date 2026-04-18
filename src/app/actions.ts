@@ -3,6 +3,7 @@
 import { auth } from "@clerk/nextjs/server";
 import { and, eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
+import { after } from "next/server";
 import { z } from "zod";
 import { db, schema } from "@/lib/db";
 import { runScan } from "@/lib/scan";
@@ -72,11 +73,15 @@ export async function startScan() {
     .values({ userId, status: "pending" })
     .returning();
 
-  // Fire-and-forget; runScan awaits Claude + Brave sequentially.
-  // For MVP single-user, this fits in a 60s serverless window.
-  // Phase 2 moves this to a queue.
-  runScan(userId, scan.id).catch((err) => {
-    console.error("scan failed", scan.id, err);
+  // Run the scan after the response returns so the dashboard can redirect
+  // immediately. Vercel keeps the function warm until `after()` resolves,
+  // up to the route's maxDuration.
+  after(async () => {
+    try {
+      await runScan(userId, scan.id);
+    } catch (err) {
+      console.error("scan failed", scan.id, err);
+    }
   });
 
   revalidatePath("/dashboard");
