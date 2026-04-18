@@ -1,0 +1,79 @@
+[
+  {
+    "name": "Spokeo",
+    "hostnames": ["spokeo.com", "www.spokeo.com"],
+    "optOutUrl": "https://www.spokeo.com/optout",
+    "contactEmail": "customercare@spokeo.com",
+    "notes": "Paste profile URL + email; verify via email link."
+  },
+  {
+    "name": "Whitepages",
+    "hostnames": ["whitepages.com", "www.whitepages.com"],
+    "optOutUrl": "https://www.whitepages.com/suppression-requests",
+    "contactEmail": null,
+    "notes": "Requires phone call / SMS verification."
+  },
+  {
+    "name": "BeenVerified",
+    "hostnames": ["beenverified.com", "www.beenverified.com"],
+    "optOutUrl": "https://www.beenverified.com/app/optout/search",
+    "contactEmail": "privacy@beenverified.com",
+    "notes": "Find profile, click 'Proceed to Opt Out', email verify."
+  },
+  {
+    "name": "Radaris",
+    "hostnames": ["radaris.com", "www.radaris.com"],
+    "optOutUrl": "https://radaris.com/control/privacy",
+    "contactEmail": "support@radaris.com",
+    "notes": "Known to be uncooperative; resubmissions often needed."
+  },
+  {
+    "name": "Intelius",
+    "hostnames": ["intelius.com", "www.intelius.com"],
+    "optOutUrl": "https://www.intelius.com/opt-out",
+    "contactEmail": "privacy@intelius.com"
+  },
+  {
+    "name": "MyLife",
+    "hostnames": ["mylife.com", "www.mylife.com"],
+    "optOutUrl": "https://www.mylife.com/ccpa/index.pub",
+    "contactEmail": "privacy@mylife.com"
+  },
+  {
+    "name": "PeopleFinder",
+    "hostnames": ["peoplefinder.com", "www.peoplefinder.com"],
+    "optOutUrl": "https://www.peoplefinder.com/optout.php",
+    "contactEmail": null
+  },
+  {
+    "name": "TruePeopleSearch",
+    "hostnames": ["truepeoplesearch.com", "www.truepeoplesearch.com"],
+    "optOutUrl": "https://www.truepeoplesearch.com/removal",
+    "contactEmail": null,
+    "notes": "Removes within 24h."
+  },
+  {
+    "name": "FastPeopleSearch",
+    "hostnames": ["fastpeoplesearch.com", "www.fastpeoplesearch.com"],
+    "optOutUrl": "https://www.fastpeoplesearch.com/removal",
+    "contactEmail": null
+  },
+  {
+    "name": "USPhoneBook",
+    "hostnames": ["usphonebook.com", "www.usphonebook.com"],
+    "optOutUrl": "https://www.usphonebook.com/opt-out",
+    "contactEmail": null
+  },
+  {
+    "name": "PeekYou",
+    "hostnames": ["peekyou.com", "www.peekyou.com"],
+    "optOutUrl": "https://www.peekyou.com/about/contact/optout/index.php",
+    "contactEmail": "support@peekyou.com"
+  },
+  {
+    "name": "ThatsThem",
+    "hostnames": ["thatsthem.com", "www.thatsthem.com"],
+    "optOutUrl": "https://thatsthem.com/optout",
+    "contactEmail": null
+  }
+]
